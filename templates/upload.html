@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Financial Analysis - Upload</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      .upload-form {
+        border: 2px dashed #ccc;
+        padding: 20px;
+        text-align: center;
+        margin-top: 50px;
+      }
+      .submit-btn {
+        background-color: #4caf50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="upload-form">
+      <h2>Upload Financial Data</h2>
+      <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".json" required />
+        <br />
+        <button type="submit" class="submit-btn">Analyze Data</button>
+      </form>
+    </div>
+    <script>
+      document.querySelector("form").onsubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+
+        try {
+          const response = await fetch("/upload", {
+            method: "POST",
+            body: formData,
+          });
+
+          const data = await response.json();
+
+          if (data.success) {
+            window.location.href = "/results";
+          } else {
+            alert(data.error || "An error occurred");
+          }
+        } catch (error) {
+          alert("An error occurred while uploading the file");
+        }
+      };
+    </script>
+  </body>
+</html>
